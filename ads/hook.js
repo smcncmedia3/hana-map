@@ -5,5 +5,5 @@ window.hanaAds=function(withPois){ if(!RULE||!RS) return null; const h=S.t.h;
   const out={ver:1, time:tstr(S.t), t:S.t, hour:h, dayType:DI.type, upth:UPTH,
     types:PT.map((t,k)=>({key:t, name:PTN[t], n:RS.tn[k], now:+RULE.m[k][h].toFixed(4), on:!!S.tgt[t],
       share:ws?+(tot[k]/ws).toFixed(4):0, day:+RULE.day[k].toFixed(4), m:RULE.m[k].map(v=>+v.toFixed(4))}))};
-  if(withPois){ out.pois=[]; for(let i=0;i<NP;i++){ if(!Z.poi.open[i]) continue; out.pois.push({t:PT[Z.poi.t[i]], nm:Z.poi.nm[i], ad:Z.poi.ad[i], lat:+PLL[i][1].toFixed(6), lon:+PLL[i][0].toFixed(6)}); } }
+  if(withPois){ out.pois=[]; for(let i=0;i<NP;i++){ if(!Z.poi.open[i]) continue; out.pois.push({t:PT[Z.poi.t[i]], nm:Z.poi.nm[i], ad:Z.poi.ad[i], lat:+PLL[i][1].toFixed(6), lon:+PLL[i][0].toFixed(6), sc:Math.round(RS.sc[i]), on:!!S.tgt[PT[Z.poi.t[i]]]}); } }
   return out; };
