@@ -10,15 +10,15 @@
  ],
  "reach_now": 6897394,
  "index_now": 1.2312,
- "cap_per_campaign": 500,
+ "cap_per_campaign": 250,
  "campaigns": [
   {
    "campaign": "[TEST] 하나_라운지_반경1km",
-   "want": 500,
+   "want": 250,
    "have": 200,
    "remove": 0,
-   "add": 300,
-   "people": 8219091,
+   "add": 50,
+   "people": 4726000,
    "top": [
     "올바른서울병원 (병원, 26,151명)",
     "사랑플러스병원 (병원, 26,092명)",
@@ -30,7 +30,7 @@
  ],
  "note": "",
  "candidates": 6345,
- "dropped": 5845,
+ "dropped": 6095,
  "budget": {
   "base_won": 10000,
   "factor": 1.231,
@@ -42,6 +42,5 @@
    }
   ]
  },
- "operations": 301,
- "error": "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"resourceCountLimitExceededError\": \"RESOURCE_LIMIT\"\n            },\n            \"message\": \"The request would cause a limit on the number of allowed resources of this type to be exceeded.\",\n            \"trigger\": {\n              \"stringValue\": \"PROXIMITIES_PER_CAMPAIGN\"\n            },\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"operations\",\n                  \"index\": 100\n                }\n              ]\n            },\n            \"details\": {\n              \"resourceCountDetails\": {\n                \"enclosingId\": \"24564550234\",\n                \"limit\": 500,\n                \"limitType\": \"PROXIMITIES_PER_CAMPAIGN\",\n                \"existingCount\": 400,\n                \"enclosingResource\": \"campaign\"\n              }\n            }\n          },\n          {\n            \"errorCode\": {\n              \"resourceCountLimitExceededError\": \"RESOURCE_LIMIT\"\n            },\n            \"message\": \"The request would cause a limit on the number of allowed resources of this type to be exceeded.\",\n            \"trigger\": {\n              \"stringValue\": \"PROXIMITIES_PER_CAMPAIGN\"\n            },\n            \"location\": {\n         "
+ "operations": 51
 }
