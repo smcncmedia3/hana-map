@@ -3,14 +3,14 @@
  "mode": "live",
  "serve": false,
  "types_on": [
-  "요양병원",
+  "상급·종합병원",
   "등산로 입구",
   "보건소",
-  "병원",
-  "상급·종합병원"
+  "요양병원",
+  "병원"
  ],
- "index_now": 2.0452,
- "reach_now": 7054105,
+ "index_now": 2.0448,
+ "reach_now": 7052054,
  "cap_per_campaign": 250,
  "pois": {
   "상급·종합병원": 383,
@@ -39,7 +39,7 @@
   "등산로 입구": 8,
   "하나 시니어 라운지": 1
  },
- "ops_before": 400,
+ "ops_before": 2239,
  "control_ops": 0,
  "radius_plan": {
   "remove": 0,
@@ -48,7 +48,10 @@
   "add_new": 8332
  },
  "error": [
-  "Too many requests. Retry in 60505 seconds. @ "
+  "Trying to modify the name of an active or paused campaign, where the name is already assigned to another active or paused campaign. @ mutate_operations[1].campaign_operation.create.name",
+  "Resource was not found. @ mutate_operations[2].ad_group_operation.create.campaign",
+  "Resource was not found. @ mutate_operations[3].ad_group_criterion_operation.create.ad_group",
+  "Resource was not found. @ mutate_operations[4].ad_group_ad_operation.create.ad_group"
  ],
  "ops_used_today": 2239
 }
