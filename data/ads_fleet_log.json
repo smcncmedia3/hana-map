@@ -4,9 +4,9 @@
  "serve": false,
  "types_on": [
   "상급·종합병원",
+  "보건소",
   "병원",
   "요양병원",
-  "보건소",
   "등산로 입구"
  ],
  "index_now": 2.0452,
@@ -44,16 +44,16 @@
   "campaign": "[TEST] 하나_라운지_반경1km",
   "bidding": "TARGET_SPEND",
   "languages": 0,
-  "ag_criteria": 20,
+  "ag_criteria": 0,
+  "audiences": [
+   "customers/6512297735/audiences/365878815"
+  ],
   "ads": 1,
   "upgraded_targeting": {
    "upgradedTargeting": false
   }
  },
- "validate_ops": 24,
- "validate": "FAIL",
- "errors": [
-  "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"criterionError\": \"CANNOT_ADD_AUDIENCE_SEGMENT_CRITERION_WHEN_AUDIENCE_GROUPED_IS_SET\"\n            },\n            \"message\": \"Audience segment attachment is not allowed when use audience grouped bit is set to true.\",\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"mutate_operations\",\n                  \"index\": 3\n                },\n                {\n                  \"fieldName\": \"ad_group_criterion_operation\"\n                },\n                {\n                  \"fieldName\": \"create\"\n                },\n                {\n                  \"fieldName\": \"gender\"\n                }\n              ]\n            }\n          },\n          {\n            \"errorCode\": {\n              \"criterionError\": \"CANNOT_ADD_AUDIENCE_SEGMENT_CRITERION_WHEN_AUDIENCE_GROUPED_IS_SET\"\n            },\n            \"message\": \"Audience segment attachment is not allowed when use audience grouped bit is set to true.\",\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"mutate_operations\",\n                  \"index\": 4\n                },\n                {\n                  \"fieldN"
- ],
+ "validate_ops": 5,
+ "validate": "OK — 실제 생성 가능",
  "ops_used_today": 0
 }
