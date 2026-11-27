@@ -101,6 +101,15 @@ def main():
     if live:
         log['mode'] = 'live'
         try:
+            # 캠페인 위치를 바꾸려면 'EU 정치 광고 없음' 선언이 필요(미선언 캠페인만 '없음'으로 설정)
+            eu = ads.search("SELECT campaign.resource_name, campaign.contains_eu_political_advertising FROM campaign "
+                            "WHERE campaign.status != 'REMOVED'")
+            fix = [{'update': {'resourceName': r['campaign']['resourceName'],
+                               'containsEuPoliticalAdvertising': 'DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING'},
+                    'updateMask': 'contains_eu_political_advertising'}
+                   for r in eu if r['campaign']['resourceName'] in camp
+                   and r['campaign'].get('containsEuPoliticalAdvertising') not in ('DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING', 'CONTAINS_EU_POLITICAL_ADVERTISING')]
+            if fix: ads.mutate('campaigns', fix); log['eu_declared'] = len(fix)
             if add: ads.mutate('campaignCriteria', add)       # 먼저 추가(위치가 0개가 되는 순간이 없도록)
             if rm: ads.mutate('campaignCriteria', rm)
             if rm_loc: ads.mutate('campaignCriteria', rm_loc)
