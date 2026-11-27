@@ -3,14 +3,14 @@
  "mode": "live",
  "serve": false,
  "types_on": [
-  "병원",
-  "요양병원",
   "보건소",
   "상급·종합병원",
-  "등산로 입구"
+  "등산로 입구",
+  "병원",
+  "요양병원"
  ],
- "index_now": 2.0448,
- "reach_now": 7052054,
+ "index_now": 2.0452,
+ "reach_now": 7054105,
  "cap_per_campaign": 250,
  "pois": {
   "상급·종합병원": 383,
@@ -40,8 +40,15 @@
   "하나 시니어 라운지": 1
  },
  "ops_before": 400,
+ "control_ops": 0,
+ "radius_plan": {
+  "remove": 0,
+  "add_existing": 0,
+  "new_campaigns": 40,
+  "add_new": 8332
+ },
  "error": [
-  "Cannot select fields from the following resource: 'CAMPAIGN_BUDGET', since the resource is incompatible with the resource in FROM clause. @ "
+  "Budget amount or total amount must be above the per-day minimum. See the error's details.budget_per_day_minimum_error_details field for more information. @ mutate_operations[1].campaign_operation.create.campaign_budget"
  ],
  "ops_used_today": 400
 }
