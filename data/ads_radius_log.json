@@ -35,5 +35,5 @@
  ],
  "note": "",
  "operations": 201,
- "error": "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"criterionError\": \"MISSING_EU_POLITICAL_ADVERTISING_SELF_DECLARATION\"\n            },\n            \"message\": \"This operation is only allowed after you confirm if this campaign has European Union political ads.\",\n            \"trigger\": {\n              \"int64Value\": \"24564550234\"\n            },\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"operations\",\n                  \"index\": 0\n                }\n              ]\n            }\n          }\n        ],\n        \"requestId\": \"21VDx5w1AgOh6jjW6H4aKQ\"\n      }\n    ]\n  }\n}\n"
+ "eu_declared": 1
 }
