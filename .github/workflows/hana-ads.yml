@@ -48,6 +48,7 @@ jobs:
           export PYTHONPATH=ads
           if [ "${{ inputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py; fi
       - name: 기록 커밋
+        if: always()
         run: |
           for f in data/ads_plan.json data/ads_log.json data/ads_targets_log.json; do if [ -f "$f" ]; then git add "$f"; fi; done
           if git diff --cached --quiet; then echo "no change"; exit 0; fi
