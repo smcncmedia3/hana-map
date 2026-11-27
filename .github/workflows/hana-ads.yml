@@ -34,6 +34,7 @@ jobs:
       GADS_DAILY_BUDGET_WON: ${{ vars.GADS_DAILY_BUDGET_WON }}
       GADS_TARGETS_PRUNE: ${{ vars.GADS_TARGETS_PRUNE }}
       GADS_KEEP_REGION: ${{ vars.GADS_KEEP_REGION }}
+      GADS_MAX_RADIUS: ${{ vars.GADS_MAX_RADIUS }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,15 +53,15 @@ jobs:
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"; echo "mode=$MODE"
       - name: 지금 유형별 가중치 계산(사이트와 같은 계산)
         run: |
-          if [ "${{ steps.m.outputs.mode }}" = "targets" ]; then python ads/plan.py --pois; else python ads/plan.py; fi
+          python ads/plan.py --pois
       - name: Google Ads 반영
         run: |
           export PYTHONPATH=ads
-          if [ "${{ steps.m.outputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py; fi
+          if [ "${{ steps.m.outputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py && python ads/radius.py; fi
       - name: 기록 커밋
         if: always()
         run: |
-          for f in data/ads_plan.json data/ads_log.json data/ads_targets_log.json; do if [ -f "$f" ]; then git add "$f"; fi; done
+          for f in data/ads_plan.json data/ads_log.json data/ads_targets_log.json data/ads_radius_log.json; do if [ -f "$f" ]; then git add "$f"; fi; done
           if git diff --cached --quiet; then echo "no change"; exit 0; fi
           git config user.name "hana-map-bot"
           git config user.email "hana-map-bot@users.noreply.github.com"
