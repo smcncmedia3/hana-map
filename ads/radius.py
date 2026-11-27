@@ -5,7 +5,8 @@
 반경:
  1) data/ads_plan.json 에서 지금 켜진 유형(+3% 이상)을 고르고
  2) data/ads_pois.json 의 그 유형 거점을 반경 1km 예측 5064(sc) 큰 순으로 정렬
- 3) 캠페인 이름 순으로 캠페인마다 최대 GADS_MAX_RADIUS 개(기본·한도 500)씩 나눠 담음
+ 3) 캠페인 이름 순으로 캠페인마다 최대 GADS_MAX_RADIUS 개(기본 250)씩 나눠 담음
+    (공식 한도는 500이지만 주소 붙은 반경은 1개가 2칸으로 계산되어 실제로는 250개)
     (캠페인 수 × 500 보다 많으면 순위 아래쪽은 이번 시간 제외 → 로그에 'dropped')
  4) 캠페인별 기존 반경과 비교해 빠진 것은 삭제, 새로 들어온 것만 추가
     반경 이름 = 주소(시도·시군구·도로명 나눠서 넣고 국가 KR)
@@ -47,7 +48,7 @@ def save(log):
 def main():
     plan = json.load(open('data/ads_plan.json'))
     pois = json.load(open('data/ads_pois.json'))
-    cap = min(500, int(os.environ.get('GADS_MAX_RADIUS') or 500))
+    cap = min(500, int(os.environ.get('GADS_MAX_RADIUS') or 250))  # 실측: 반경 1개가 한도 2칸을 차지 → 캠페인당 250개
     live = os.environ.get('GADS_LIVE', '') == '1'
     on = [t['key'] for t in plan['types'] if t['on']]
     idx = plan.get('index_now') or 1.0
@@ -98,6 +99,7 @@ def main():
     log['dropped'] = max(0, len(cand) - cap * len(order))
 
     rm, add, rm_loc, weight = [], [], [], {}
+    over = False
     for i, cp in enumerate(order):
         chunk = cand[i * cap:(i + 1) * cap]
         want = dict(chunk)
@@ -111,6 +113,7 @@ def main():
         gone = [rn for k, rn in have.items() if k not in want]
         new = [k for k in want if k not in have]
         ent['remove'] = len(gone); ent['add'] = len(new); ent['people'] = weight[cp]
+        if len(have) + len(new) > cap: over = True
         ent['top'] = [f"{want[k]['nm']} ({want[k]['t']}, {want[k].get('sc', 0):,}명)" for k in list(want)[:5]]
         rm += [{'remove': rn} for rn in gone]
         for k in new:
@@ -153,8 +156,12 @@ def main():
                    for r in eu if r['campaign']['resourceName'] in camp
                    and r['campaign'].get('containsEuPoliticalAdvertising') not in ('DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING', 'CONTAINS_EU_POLITICAL_ADVERTISING')]
             if fix: ads.mutate('campaigns', fix); log['eu_declared'] = len(fix)
-            if add: ads.mutate('campaignCriteria', add)      # 먼저 추가(위치 0개 순간 방지)
-            if rm: ads.mutate('campaignCriteria', rm)
+            if over:   # 한도 초과 우려 → 빠질 반경 먼저 삭제(want 가 비지 않으므로 위치 0개는 아님)
+                if rm: ads.mutate('campaignCriteria', rm)
+                if add: ads.mutate('campaignCriteria', add)
+            else:      # 먼저 추가(위치 0개 순간 방지)
+                if add: ads.mutate('campaignCriteria', add)
+                if rm: ads.mutate('campaignCriteria', rm)
             if rm_loc: ads.mutate('campaignCriteria', rm_loc)
             if bud_ops: ads.mutate('campaignBudgets', bud_ops)
         except Exception as e:
