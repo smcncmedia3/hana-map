@@ -109,7 +109,7 @@ def read_template(ads, log):
     t['ag_criteria'] = [r['adGroupCriterion'] for r in crit
                         if r['adGroupCriterion'].get('type') in ('AGE_RANGE', 'GENDER', 'PARENTAL_STATUS', 'INCOME_RANGE')]
     mf = ['marketing_images', 'square_marketing_images', 'portrait_marketing_images', 'tall_portrait_marketing_images',
-          'logo_images', 'headlines', 'descriptions', 'business_name', 'call_to_action_text', 'lead_form_only']
+          'logo_images', 'headlines', 'descriptions', 'business_name', 'call_to_action_text']
     ads_rows = tryq(ads, log, 'ad', "SELECT ad_group_ad.ad.id, ad_group_ad.ad.type, ad_group_ad.ad.name, ad_group_ad.ad.final_urls FROM ad_group_ad "
                     f"WHERE ad_group.resource_name = '{agrn}' AND ad_group_ad.status != 'REMOVED'") or []
     t['ads'] = []
@@ -127,6 +127,16 @@ def read_template(ads, log):
     if not t['ads']:
         raise SystemExit('템플릿에서 복제할 디맨드젠 이미지 광고를 찾지 못했습니다.')
     return t
+
+
+def clean(o):
+    """API 가 돌려준 UNKNOWN/UNSPECIFIED 값은 생성 요청에 쓸 수 없어 제거"""
+    if isinstance(o, dict):
+        r = {k: clean(v) for k, v in o.items() if v not in ('UNKNOWN', 'UNSPECIFIED')}
+        return {k: v for k, v in r.items() if v not in ({}, [], None)}
+    if isinstance(o, list):
+        return [clean(v) for v in o]
+    return o
 
 
 def deep_merge(a, b):
@@ -158,7 +168,8 @@ def build_campaign_ops(ads, t, cname, agname, budget_micros):
     camp = {'resourceName': cp, 'name': cname, 'status': 'PAUSED', 'advertisingChannelType': c['advertisingChannelType'],
             'campaignBudget': b, 'containsEuPoliticalAdvertising': 'DOES_NOT_CONTAIN_EU_POLITICAL_ADVERTISING'}
     camp.update(bidding(c))
-    if c.get('geoTargetTypeSetting'): camp['geoTargetTypeSetting'] = c['geoTargetTypeSetting']
+    g = clean(c.get('geoTargetTypeSetting') or {})
+    if g: camp['geoTargetTypeSetting'] = g
     if 'demandGenCampaignSettings' in c: camp['demandGenCampaignSettings'] = c['demandGenCampaignSettings']
     ops = [{'campaignBudgetOperation': {'create': {'resourceName': b, 'name': cname + ' 예산', 'amountMicros': str(budget_micros),
                                                     'deliveryMethod': t['budget'].get('deliveryMethod', 'STANDARD'),
@@ -172,13 +183,28 @@ def build_campaign_ops(ads, t, cname, agname, budget_micros):
     for cr in t['ag_criteria']:
         body = {'adGroup': ag, 'negative': bool(cr.get('negative'))}
         for k in ('ageRange', 'gender', 'parentalStatus', 'incomeRange'):
-            if cr.get(k): body[k] = cr[k]
+            if cr.get(k): body[k] = clean(cr[k])
         ops.append({'adGroupCriterionOperation': {'create': body}})
     for a in t['ads']:
-        ad = {'finalUrls': a['finalUrls'], 'demandGenMultiAssetAd': a['demandGenMultiAssetAd']}
+        ad = {'finalUrls': a['finalUrls'], 'demandGenMultiAssetAd': clean(a['demandGenMultiAssetAd'])}
         if a.get('name'): ad['name'] = a['name']
         ops.append({'adGroupAdOperation': {'create': {'adGroup': ag, 'status': 'ENABLED', 'ad': ad}}})
     return ops
+
+
+def brief(msg):
+    """API 오류를 '메시지 @ 위치' 목록으로 줄임"""
+    try:
+        j = json.loads(msg[msg.index('{'):])
+        out = []
+        for d in j['error'].get('details', []):
+            for e in d.get('errors', []):
+                path = '.'.join(f"{p['fieldName']}" + (f"[{p['index']}]" if 'index' in p else '')
+                                for p in e.get('location', {}).get('fieldPathElements', []))
+                out.append(f"{e.get('message')} @ {path}")
+        return out or [msg[:1500]]
+    except Exception:
+        return [msg[:1500]]
 
 
 def gmutate(ads, ops, validate):
@@ -229,7 +255,7 @@ def main():
             try:
                 gmutate(ads, o, True); log['validate'] = 'OK — 실제 생성 가능'
             except RuntimeError as e:
-                log['validate'] = 'FAIL'; log['error'] = str(e)[:3000]
+                log['validate'] = 'FAIL'; log['errors'] = brief(str(e))
             return
 
         # 현재 fleet
