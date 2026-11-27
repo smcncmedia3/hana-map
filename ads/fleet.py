@@ -268,18 +268,22 @@ def main():
             return
 
         # 현재 fleet
-        rows = ads.search("SELECT campaign.resource_name, campaign.name, campaign.status, campaign.campaign_budget, "
-                          "campaign_budget.amount_micros, campaign_budget.explicitly_shared, ad_group.resource_name, ad_group.name, ad_group.status "
-                          f"FROM ad_group WHERE campaign.name LIKE '{PREFIX}%' AND campaign.status != 'REMOVED' AND ad_group.status != 'REMOVED'")
+        camps = ads.search("SELECT campaign.resource_name, campaign.name, campaign.status, campaign.campaign_budget, "
+                           "campaign_budget.amount_micros, campaign_budget.explicitly_shared FROM campaign "
+                           f"WHERE campaign.name LIKE '{PREFIX}%' AND campaign.status != 'REMOVED'")
+        cinfo = {r['campaign']['resourceName']: r for r in camps}
+        rows = ads.search("SELECT campaign.resource_name, ad_group.resource_name, ad_group.name, ad_group.status FROM ad_group "
+                          f"WHERE campaign.name LIKE '{PREFIX}%' AND campaign.status != 'REMOVED' AND ad_group.status != 'REMOVED'")
         fleet = {}   # campaign rn -> info
         for r in rows:
             m = AGTAG.match(r['adGroup']['name'] or '')
-            if not m: continue
             cp = r['campaign']['resourceName']
-            f = fleet.setdefault(cp, {'name': r['campaign']['name'], 'type': m.group(1), 'n': int(m.group(2)),
-                                      'status': r['campaign']['status'], 'budget': r['campaign'].get('campaignBudget'),
-                                      'amount': int(r.get('campaignBudget', {}).get('amountMicros', 0)),
-                                      'shared': r.get('campaignBudget', {}).get('explicitlyShared'), 'ag': [], 'radii': {}})
+            if not m or cp not in cinfo: continue
+            ci = cinfo[cp]
+            f = fleet.setdefault(cp, {'name': ci['campaign']['name'], 'type': m.group(1), 'n': int(m.group(2)),
+                                      'status': ci['campaign']['status'], 'budget': ci['campaign'].get('campaignBudget'),
+                                      'amount': int(ci.get('campaignBudget', {}).get('amountMicros', 0)),
+                                      'shared': ci.get('campaignBudget', {}).get('explicitlyShared'), 'ag': [], 'radii': {}})
             f['ag'].append((r['adGroup']['resourceName'], r['adGroup']['status']))
         if fleet:
             crit = ads.search("SELECT campaign.resource_name, campaign_criterion.resource_name, "
