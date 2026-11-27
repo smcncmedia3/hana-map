@@ -49,7 +49,7 @@ jobs:
           if [ "${{ inputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py; fi
       - name: 기록 커밋
         run: |
-          git add data/ads_plan.json data/ads_log.json data/ads_targets_log.json 2>/dev/null || true
+          for f in data/ads_plan.json data/ads_log.json data/ads_targets_log.json; do if [ -f "$f" ]; then git add "$f"; fi; done
           if git diff --cached --quiet; then echo "no change"; exit 0; fi
           git config user.name "hana-map-bot"
           git config user.email "hana-map-bot@users.noreply.github.com"
