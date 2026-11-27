@@ -2,6 +2,9 @@ name: hana-map Google Ads 정시 반영
 on:
   schedule:
     - cron: '2 * * * *'   # 매시 2분(KST 매시 정각 직후)
+  push:
+    branches: [main]
+    paths: ['ads/request.txt']   # 이 파일을 바꿔 커밋하면 실행(첫 단어 sync/targets)
   workflow_dispatch:
     inputs:
       mode:
@@ -40,13 +43,20 @@ jobs:
           python-version: '3.12'
       - name: 준비
         run: pip install -q playwright && python -m playwright install --with-deps chromium
+      - name: 실행 모드
+        id: m
+        run: |
+          MODE="${{ inputs.mode }}"
+          if [ -z "$MODE" ] && [ "${{ github.event_name }}" = "push" ]; then MODE=$(head -c 20 ads/request.txt | tr -dc 'a-z' ); fi
+          [ "$MODE" = "targets" ] || MODE=sync
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"; echo "mode=$MODE"
       - name: 지금 유형별 가중치 계산(사이트와 같은 계산)
         run: |
-          if [ "${{ inputs.mode }}" = "targets" ]; then python ads/plan.py --pois; else python ads/plan.py; fi
+          if [ "${{ steps.m.outputs.mode }}" = "targets" ]; then python ads/plan.py --pois; else python ads/plan.py; fi
       - name: Google Ads 반영
         run: |
           export PYTHONPATH=ads
-          if [ "${{ inputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py; fi
+          if [ "${{ steps.m.outputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py; fi
       - name: 기록 커밋
         if: always()
         run: |
