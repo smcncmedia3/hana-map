@@ -3,10 +3,10 @@
  "mode": "live",
  "serve": false,
  "types_on": [
+  "상급·종합병원",
   "등산로 입구",
   "병원",
   "보건소",
-  "상급·종합병원",
   "요양병원"
  ],
  "index_now": 0,
@@ -40,6 +40,12 @@
   "하나 시니어 라운지": 1
  },
  "ops_before": 2239,
+ "query_errors": {
+  "audience": "429 {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"quotaError\": \"RESOURCE_EXHAUSTED\"\n            },\n            \"message\": \"Too many requests. Retry in 50702 seconds.\",\n            \"details\": {\n              \"quotaErrorDetails\": {\n                \"rateScope\": \"DEVELOPER\",\n                \"rateName\": \"Number of operations fo",
+  "ad.portrait_marketing_images": "429 {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"quotaError\": \"RESOURCE_EXHAUSTED\"\n            },\n            \"message\": \"Too many requests. Retry in 50700 seconds.\",\n            \"details\": {\n              \"quotaErrorDetails\": {\n                \"rateScope\": \"DEVELOPER\",\n                \"rateName\": \"Number of operations fo",
+  "ad.headlines": "429 {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"quotaError\": \"RESOURCE_EXHAUSTED\"\n            },\n            \"message\": \"Too many requests. Retry in 50699 seconds.\",\n            \"details\": {\n              \"quotaErrorDetails\": {\n                \"rateScope\": \"DEVELOPER\",\n                \"rateName\": \"Number of operations fo",
+  "ad.call_to_action_text": "429 {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"quotaError\": \"RESOURCE_EXHAUSTED\"\n            },\n            \"message\": \"Too many requests. Retry in 50697 seconds.\",\n            \"details\": {\n              \"quotaErrorDetails\": {\n                \"rateScope\": \"DEVELOPER\",\n                \"rateName\": \"Number of operations fo"
+ },
  "control_ops": 0,
  "radius_plan": {
   "remove": 0,
@@ -48,10 +54,7 @@
   "add_new": 8332
  },
  "error": [
-  "Trying to modify the name of an active or paused campaign, where the name is already assigned to another active or paused campaign. @ mutate_operations[1].campaign_operation.create.name",
-  "Resource was not found. @ mutate_operations[2].ad_group_operation.create.campaign",
-  "Resource was not found. @ mutate_operations[3].ad_group_criterion_operation.create.ad_group",
-  "Resource was not found. @ mutate_operations[4].ad_group_ad_operation.create.ad_group"
+  "Too many requests. Retry in 50697 seconds. @ "
  ],
  "ops_used_today": 2239
 }
