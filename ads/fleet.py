@@ -11,7 +11,7 @@
    GADS_SERVE=1 이면 광고그룹 대신 캠페인 자체를 켜고 끔(실제 집행. 반경이 1개도 없는 캠페인은 절대 켜지 않음)
  - 예산: GADS_DAILY_BUDGET_WON × 시간 지수(index_now, GADS_INDEX_MIN~MAX) 를
    켜진 유형의 비중(share) → 그 유형 캠페인들의 반경 인구 합 비율로 나눔. 5% 넘게 달라질 때만 바꿈
-작업 한도: data/ads_ops.json 에 KST 날짜별 사용량을 적고 GADS_DAILY_OPS(기본 14,000) 를 넘기지 않음
+작업 한도: data/ads_ops.json 에 미국 태평양시간 날짜별 사용량을 적고 GADS_DAILY_OPS(기본 14,000) 를 넘기지 않음
    순서 = ① 매시간 켜기/끄기·예산 ② 새 캠페인 만들기 ③ 반경 채우기. 남은 반경은 다음 시간에 이어서
 모드: fleet.py            → 실행
       fleet.py validate   → 템플릿을 읽고 캠페인 1개 생성을 validateOnly 로 시험(아무것도 바뀌지 않음)
@@ -31,7 +31,9 @@ def env(k, d=''):
 
 
 def today():
-    return datetime.datetime.utcnow().astimezone(datetime.timezone(datetime.timedelta(hours=9))).strftime('%Y-%m-%d')
+    # Google Ads API 일일 한도는 미국 태평양 시간 자정에 초기화
+    from zoneinfo import ZoneInfo
+    return datetime.datetime.now(ZoneInfo('America/Los_Angeles')).strftime('%Y-%m-%d')
 
 
 class Ops:
@@ -42,7 +44,7 @@ class Ops:
         except Exception:
             d = {}
         self.day = today()
-        self.used = d.get('used', 0) if d.get('date') == self.day else 0
+        self.used = d.get('used', 0) if d.get('date') == self.day else int(env('GADS_OPS_CARRY', '0') or 0)
 
     def left(self):
         return max(0, self.limit - self.used)
