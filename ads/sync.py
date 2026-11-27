@@ -79,8 +79,13 @@ def main():
     if log['mode'] == 'dry_run':
         log['note'] = (log['note'] + ' ' if log['note'] else '') + '저장소 변수 GADS_LIVE=1 이 아니어서 모의 실행'
     else:
-        if ops: ads.mutate('adGroups', ops, validate_only=True); ads.mutate('adGroups', ops)
-        if bops: ads.mutate('campaignBudgets', bops, validate_only=True); ads.mutate('campaignBudgets', bops)
+        try:
+            if ops: ads.mutate('adGroups', ops, validate_only=True); ads.mutate('adGroups', ops)
+            if bops: ads.mutate('campaignBudgets', bops, validate_only=True); ads.mutate('campaignBudgets', bops)
+        except Exception as e:
+            log['error'] = str(e)[:2000]
+            json.dump(log, open('data/ads_log.json', 'w'), ensure_ascii=False, indent=1)
+            raise
     json.dump(log, open('data/ads_log.json', 'w'), ensure_ascii=False, indent=1)
     print(log['mode'], '태그 광고그룹', seen, '변경', len(log['changes']), log['note'])
 
