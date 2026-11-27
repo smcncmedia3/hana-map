@@ -1,0 +1,39 @@
+{
+ "time": "2026-11-27 23:00",
+ "mode": "live",
+ "types_on": [
+  "상급·종합병원",
+  "병원",
+  "요양병원",
+  "보건소",
+  "등산로 입구"
+ ],
+ "cap": 200,
+ "campaigns": [
+  {
+   "campaign": "[TEST] 하나_라운지_반경1km",
+   "region": "전국",
+   "candidates": 6393,
+   "want": 200,
+   "have": 0,
+   "remove": 0,
+   "add": 200,
+   "top": [
+    "올바른서울병원 (병원, 26,151명)",
+    "사랑플러스병원 (병원, 26,092명)",
+    "조은마디병원 (병원, 25,907명)",
+    "재단법인베스티안재단베스티안서울병원 (대형병원, 25,771명)",
+    "성심의료재단강동성심병원 (대형병원, 25,641명)",
+    "달려라병원 (병원, 25,606명)",
+    "남기세병원 (병원, 24,682명)",
+    "위드힘병원 (병원, 24,334명)",
+    "강동아너스힐병원 (병원, 24,322명)",
+    "참바로병원 (병원, 24,236명)"
+   ],
+   "remove_region": 1
+  }
+ ],
+ "note": "",
+ "operations": 201,
+ "error": "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"criterionError\": \"MISSING_EU_POLITICAL_ADVERTISING_SELF_DECLARATION\"\n            },\n            \"message\": \"This operation is only allowed after you confirm if this campaign has European Union political ads.\",\n            \"trigger\": {\n              \"int64Value\": \"24564550234\"\n            },\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"operations\",\n                  \"index\": 0\n                }\n              ]\n            }\n          }\n        ],\n        \"requestId\": \"21VDx5w1AgOh6jjW6H4aKQ\"\n      }\n    ]\n  }\n}\n"
+}
