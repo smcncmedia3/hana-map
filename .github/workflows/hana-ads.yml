@@ -1,0 +1,57 @@
+name: hana-map Google Ads 정시 반영
+on:
+  schedule:
+    - cron: '2 * * * *'   # 매시 2분(KST 매시 정각 직후)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'sync = 광고그룹 켜기/끄기, targets = 반경 1km 위치 타겟 맞추기'
+        default: sync
+        type: choice
+        options: [sync, targets]
+permissions:
+  contents: write
+concurrency:
+  group: hana-ads
+  cancel-in-progress: false
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Asia/Seoul
+      GADS_CLIENT_ID: ${{ secrets.GADS_CLIENT_ID }}
+      GADS_CLIENT_SECRET: ${{ secrets.GADS_CLIENT_SECRET }}
+      GADS_REFRESH_TOKEN: ${{ secrets.GADS_REFRESH_TOKEN }}
+      GADS_DEVELOPER_TOKEN: ${{ secrets.GADS_DEVELOPER_TOKEN }}
+      GADS_CUSTOMER_ID: ${{ vars.GADS_CUSTOMER_ID }}
+      GADS_LOGIN_CUSTOMER_ID: ${{ vars.GADS_LOGIN_CUSTOMER_ID }}
+      GADS_LIVE: ${{ vars.GADS_LIVE }}
+      GADS_BUDGET_MODE: ${{ vars.GADS_BUDGET_MODE }}
+      GADS_DAILY_BUDGET_WON: ${{ vars.GADS_DAILY_BUDGET_WON }}
+      GADS_TARGETS_PRUNE: ${{ vars.GADS_TARGETS_PRUNE }}
+      GADS_KEEP_REGION: ${{ vars.GADS_KEEP_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 준비
+        run: pip install -q playwright && python -m playwright install --with-deps chromium
+      - name: 지금 유형별 가중치 계산(사이트와 같은 계산)
+        run: |
+          if [ "${{ inputs.mode }}" = "targets" ]; then python ads/plan.py --pois; else python ads/plan.py; fi
+      - name: Google Ads 반영
+        run: |
+          export PYTHONPATH=ads
+          if [ "${{ inputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py; fi
+      - name: 기록 커밋
+        run: |
+          git add data/ads_plan.json data/ads_log.json data/ads_targets_log.json 2>/dev/null || true
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git config user.name "hana-map-bot"
+          git config user.email "hana-map-bot@users.noreply.github.com"
+          git commit -q -m "hana-map: Ads 반영 기록 $(date '+%m/%d %H:%M')"
+          for i in 1 2 3; do git pull --rebase -q origin main && git push -q origin HEAD:main && break; sleep 5; done
