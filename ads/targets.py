@@ -27,10 +27,11 @@ def main():
     keys = sorted({p['t'] for p in pois})
     live = os.environ.get('GADS_LIVE', '') == '1'
     log = {'mode': 'dry_run', 'adgroups': [], 'note': ''}
-    if missing():
+    miss = missing()
+    if miss:
         cnt = {}
         for p in pois: cnt[p['t']] = cnt.get(p['t'], 0) + 1
-        log['note'] = '비밀값 없음 → 유형별 거점 수만 기록'; log['poi_count'] = cnt
+        log['note'] = '비밀값 없음: ' + ', '.join(miss) + ' → 유형별 거점 수만 기록'; log['poi_count'] = cnt
         json.dump(log, open('data/ads_targets_log.json', 'w'), ensure_ascii=False, indent=1); print(log['note'], cnt); return
     ads = Ads()
     ags = ads.search("SELECT campaign.resource_name, ad_group.resource_name, ad_group.name FROM ad_group "
