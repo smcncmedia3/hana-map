@@ -1,0 +1,55 @@
+{
+ "mode": "live",
+ "adgroups": [
+  {
+   "adGroup": "하나_DG_라운지 [라운지]",
+   "want": 5,
+   "have": 0,
+   "add": 5,
+   "remove_old_radius": 0,
+   "remove_region": 1
+  },
+  {
+   "adGroup": "하나_DG_주요공원_서울 [공원|서울]",
+   "want": 130,
+   "have": 0,
+   "add": 130,
+   "remove_old_radius": 0,
+   "remove_region": 1
+  },
+  {
+   "adGroup": "하나_DG_요양병원_서울 [요양병원|서울]",
+   "want": 100,
+   "have": 0,
+   "add": 100,
+   "remove_old_radius": 0,
+   "remove_region": 1
+  },
+  {
+   "adGroup": "하나_DG_노인복지관_서울 [노인복지관|서울]",
+   "want": 93,
+   "have": 0,
+   "add": 93,
+   "remove_old_radius": 0,
+   "remove_region": 1
+  },
+  {
+   "adGroup": "하나_DG_보건소_서울 [보건소|서울]",
+   "want": 36,
+   "have": 0,
+   "add": 36,
+   "remove_old_radius": 0,
+   "remove_region": 1
+  },
+  {
+   "adGroup": "하나_DG_상급종합병원_서울 [대형병원|서울]",
+   "want": 59,
+   "have": 0,
+   "add": 59,
+   "remove_old_radius": 0,
+   "remove_region": 1
+  }
+ ],
+ "note": "",
+ "error": "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Invalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[0].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[1].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[2].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[3].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[4].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[5].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[6].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[7].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[8].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[9].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[10].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[11].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[12].create': Cannot find field.\\nInvalid JSON payload received. Unknown name \\\"proximity\\\" at 'operations[13].create'"
+}
