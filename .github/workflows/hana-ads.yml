@@ -4,14 +4,14 @@ on:
     - cron: '2 * * * *'   # 매시 2분(KST 매시 정각 직후)
   push:
     branches: [main]
-    paths: ['ads/request.txt']   # 이 파일을 바꿔 커밋하면 실행(첫 단어 sync/targets)
+    paths: ['ads/request.txt']   # 이 파일을 바꿔 커밋하면 실행(첫 단어 run/validate)
   workflow_dispatch:
     inputs:
       mode:
-        description: 'sync = 광고그룹 켜기/끄기, targets = 반경 1km 위치 타겟 맞추기'
-        default: sync
+        description: 'run = 매시간 반영(켜기/끄기·예산·반경 채우기), validate = 캠페인 복제 시험(변경 없음)'
+        default: run
         type: choice
-        options: [sync, targets]
+        options: [run, validate]
 permissions:
   contents: write
 concurrency:
@@ -35,6 +35,11 @@ jobs:
       GADS_TARGETS_PRUNE: ${{ vars.GADS_TARGETS_PRUNE }}
       GADS_KEEP_REGION: ${{ vars.GADS_KEEP_REGION }}
       GADS_MAX_RADIUS: ${{ vars.GADS_MAX_RADIUS }}
+      GADS_DAILY_OPS: ${{ vars.GADS_DAILY_OPS }}
+      GADS_SERVE: ${{ vars.GADS_SERVE }}
+      GADS_TEMPLATE_CAMPAIGN: ${{ vars.GADS_TEMPLATE_CAMPAIGN }}
+      GADS_INDEX_MIN: ${{ vars.GADS_INDEX_MIN }}
+      GADS_INDEX_MAX: ${{ vars.GADS_INDEX_MAX }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,7 +54,7 @@ jobs:
         run: |
           MODE="${{ inputs.mode }}"
           if [ -z "$MODE" ] && [ "${{ github.event_name }}" = "push" ]; then MODE=$(head -c 20 ads/request.txt | tr -dc 'a-z' ); fi
-          [ "$MODE" = "targets" ] || MODE=sync
+          [ "$MODE" = "validate" ] || MODE=run
           echo "mode=$MODE" >> "$GITHUB_OUTPUT"; echo "mode=$MODE"
       - name: 지금 유형별 가중치 계산(사이트와 같은 계산)
         run: |
@@ -57,11 +62,11 @@ jobs:
       - name: Google Ads 반영
         run: |
           export PYTHONPATH=ads
-          if [ "${{ steps.m.outputs.mode }}" = "targets" ]; then python ads/targets.py; else python ads/sync.py && python ads/radius.py; fi
+          if [ "${{ steps.m.outputs.mode }}" = "validate" ]; then python ads/fleet.py validate; else python ads/fleet.py; fi
       - name: 기록 커밋
         if: always()
         run: |
-          for f in data/ads_plan.json data/ads_log.json data/ads_targets_log.json data/ads_radius_log.json; do if [ -f "$f" ]; then git add "$f"; fi; done
+          for f in data/ads_plan.json data/ads_fleet_log.json data/ads_ops.json; do if [ -f "$f" ]; then git add "$f"; fi; done
           if git diff --cached --quiet; then echo "no change"; exit 0; fi
           git config user.name "hana-map-bot"
           git config user.email "hana-map-bot@users.noreply.github.com"
