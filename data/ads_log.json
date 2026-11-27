@@ -1,0 +1,52 @@
+{
+ "time": "2026-11-27 23:00",
+ "dayType": "weekday",
+ "mode": "live",
+ "targets_on": [
+  "상급·종합병원",
+  "병원",
+  "요양병원",
+  "보건소",
+  "등산로 입구"
+ ],
+ "changes": [
+  {
+   "adGroup": "하나_DG_라운지 [라운지]",
+   "from": "ENABLED",
+   "to": "PAUSED",
+   "weight": "-26.7%"
+  },
+  {
+   "adGroup": "하나_DG_라운지 [라운지]",
+   "from": "ENABLED",
+   "to": "PAUSED",
+   "weight": "-26.7%"
+  },
+  {
+   "adGroup": "하나_DG_주요공원_서울 [공원|서울]",
+   "from": "ENABLED",
+   "to": "PAUSED",
+   "weight": "-6.9%"
+  },
+  {
+   "adGroup": "하나_DG_노인복지관_서울 [노인복지관|서울]",
+   "from": "ENABLED",
+   "to": "PAUSED",
+   "weight": "-0.6%"
+  },
+  {
+   "adGroup": "하나_DG_라운지 [라운지]",
+   "from": "ENABLED",
+   "to": "PAUSED",
+   "weight": "-26.7%"
+  },
+  {
+   "adGroup": "하나_DG_라운지 [라운지]",
+   "from": "ENABLED",
+   "to": "PAUSED",
+   "weight": "-26.7%"
+  }
+ ],
+ "note": "",
+ "adgroups_tagged": 9
+}
