@@ -108,6 +108,11 @@ def read_template(ads, log):
                 f"FROM ad_group_criterion WHERE ad_group.resource_name = '{agrn}' AND ad_group_criterion.status != 'REMOVED'") or []
     t['ag_criteria'] = [r['adGroupCriterion'] for r in crit
                         if r['adGroupCriterion'].get('type') in ('AGE_RANGE', 'GENDER', 'PARENTAL_STATUS', 'INCOME_RANGE')]
+    # 디맨드젠은 연령·성별을 '잠재고객(Audience)' 묶음으로 붙임 → 같은 Audience 를 그대로 연결
+    au = tryq(ads, log, 'audience', "SELECT ad_group_criterion.audience.audience FROM ad_group_criterion "
+              f"WHERE ad_group.resource_name = '{agrn}' AND ad_group_criterion.type = 'AUDIENCE' AND ad_group_criterion.status != 'REMOVED'") or []
+    t['audiences'] = [r['adGroupCriterion']['audience']['audience'] for r in au if r['adGroupCriterion'].get('audience')]
+    if t['audiences']: t['ag_criteria'] = []
     mf = ['marketing_images', 'square_marketing_images', 'portrait_marketing_images', 'tall_portrait_marketing_images',
           'logo_images', 'headlines', 'descriptions', 'business_name', 'call_to_action_text']
     ads_rows = tryq(ads, log, 'ad', "SELECT ad_group_ad.ad.id, ad_group_ad.ad.type, ad_group_ad.ad.name, ad_group_ad.ad.final_urls FROM ad_group_ad "
@@ -180,6 +185,8 @@ def build_campaign_ops(ads, t, cname, agname, budget_micros):
     agb = {'resourceName': ag, 'campaign': cp, 'name': agname, 'status': 'ENABLED'}
     if t['ad_group'].get('type') not in (None, 'UNSPECIFIED', 'UNKNOWN'): agb['type'] = t['ad_group']['type']
     ops.append({'adGroupOperation': {'create': agb}})
+    for a in t.get('audiences', []):
+        ops.append({'adGroupCriterionOperation': {'create': {'adGroup': ag, 'audience': {'audience': a}}}})
     for cr in t['ag_criteria']:
         body = {'adGroup': ag, 'negative': bool(cr.get('negative'))}
         for k in ('ageRange', 'gender', 'parentalStatus', 'incomeRange'):
@@ -249,7 +256,7 @@ def main():
         if validate:
             o = build_campaign_ops(ads, t, f'{PREFIX} 검증용', '[하나맵|검증|1]', 10_000 * 1_000_000)
             log['template'] = {'campaign': t['campaign'].get('name'), 'bidding': t['campaign'].get('biddingStrategyType'),
-                               'languages': len(t['languages']), 'ag_criteria': len(t['ag_criteria']), 'ads': len(t['ads']),
+                               'languages': len(t['languages']), 'ag_criteria': len(t['ag_criteria']), 'audiences': t.get('audiences'), 'ads': len(t['ads']),
                                'upgraded_targeting': t['campaign'].get('demandGenCampaignSettings')}
             log['validate_ops'] = len(o)
             try:
@@ -384,7 +391,7 @@ def main():
         log['radius_left'] = rest
         if rest: log['note'] = f'오늘 작업 한도로 반경 {rest}개는 다음 시간·다음 날 이어서 넣습니다.'
     except Exception as e:
-        log['error'] = str(e)[:3000]
+        log['error'] = brief(str(e))
         raise
     finally:
         log['ops_used_today'] = ops.used

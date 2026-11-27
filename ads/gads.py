@@ -15,7 +15,7 @@ def _post(url, body, headers):
         with urllib.request.urlopen(req, timeout=60) as r:
             return json.loads(r.read() or b'{}')
     except urllib.error.HTTPError as e:
-        raise RuntimeError(f'{e.code} {e.read().decode()[:1500]}')
+        raise RuntimeError(f'{e.code} {e.read().decode()[:20000]}')
 
 class Ads:
     def __init__(self):
