@@ -3,14 +3,14 @@
  "mode": "validate",
  "serve": false,
  "types_on": [
-  "병원",
-  "등산로 입구",
   "상급·종합병원",
+  "병원",
   "요양병원",
-  "보건소"
+  "보건소",
+  "등산로 입구"
  ],
- "index_now": 0.6141,
- "reach_now": 7052054,
+ "index_now": 2.0452,
+ "reach_now": 7054105,
  "cap_per_campaign": 250,
  "pois": {
   "상급·종합병원": 383,
@@ -40,9 +40,6 @@
   "하나 시니어 라운지": 1
  },
  "ops_before": 0,
- "query_errors": {
-  "ad.lead_form_only": "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"queryError\": \"UNRECOGNIZED_FIELD\"\n            },\n            \"message\": \"Unrecognized field in the query: 'ad_group_ad.ad.demand_gen_multi_asset_ad.lead_form_only'.\"\n          }\n        ],\n        \"requestId\": \"9Adn8QOen8W48QOgeC3bpQ\"\n      }\n    ]\n  }\n}\n"
- },
  "template": {
   "campaign": "[TEST] 하나_라운지_반경1km",
   "bidding": "TARGET_SPEND",
@@ -55,6 +52,8 @@
  },
  "validate_ops": 24,
  "validate": "FAIL",
- "error": "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"requestError\": \"INVALID_ENUM_VALUE\"\n            },\n            \"message\": \"Enum value 'UNKNOWN' cannot be used.\",\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"mutate_operations\",\n                  \"index\": 1\n                },\n                {\n                  \"fieldName\": \"campaign_operation\"\n                },\n                {\n                  \"fieldName\": \"create\"\n                },\n                {\n                  \"fieldName\": \"geo_target_type_setting\"\n                },\n                {\n                  \"fieldName\": \"negative_geo_target_type\"\n                }\n              ]\n            }\n          },\n          {\n            \"errorCode\": {\n              \"mutateError\": \"RESOURCE_NOT_FOUND\"\n            },\n            \"message\": \"Resource was not found.\",\n            \"trigger\": {\n              \"int64Value\": \"-2\"\n            },\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"mutate_operations\",\n                  \"index\": 2\n                },\n                {\n                  \"fieldName\": \"ad_group_operation\"\n                },\n ",
+ "errors": [
+  "400 {\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"Request contains an invalid argument.\",\n    \"status\": \"INVALID_ARGUMENT\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"criterionError\": \"CANNOT_ADD_AUDIENCE_SEGMENT_CRITERION_WHEN_AUDIENCE_GROUPED_IS_SET\"\n            },\n            \"message\": \"Audience segment attachment is not allowed when use audience grouped bit is set to true.\",\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"mutate_operations\",\n                  \"index\": 3\n                },\n                {\n                  \"fieldName\": \"ad_group_criterion_operation\"\n                },\n                {\n                  \"fieldName\": \"create\"\n                },\n                {\n                  \"fieldName\": \"gender\"\n                }\n              ]\n            }\n          },\n          {\n            \"errorCode\": {\n              \"criterionError\": \"CANNOT_ADD_AUDIENCE_SEGMENT_CRITERION_WHEN_AUDIENCE_GROUPED_IS_SET\"\n            },\n            \"message\": \"Audience segment attachment is not allowed when use audience grouped bit is set to true.\",\n            \"location\": {\n              \"fieldPathElements\": [\n                {\n                  \"fieldName\": \"mutate_operations\",\n                  \"index\": 4\n                },\n                {\n                  \"fieldN"
+ ],
  "ops_used_today": 0
 }
