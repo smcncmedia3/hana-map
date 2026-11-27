@@ -1,16 +1,16 @@
 {
  "time": "2026-11-28 00:00",
- "mode": "validate",
+ "mode": "live",
  "serve": false,
  "types_on": [
-  "상급·종합병원",
-  "보건소",
   "병원",
   "요양병원",
+  "보건소",
+  "상급·종합병원",
   "등산로 입구"
  ],
- "index_now": 2.0452,
- "reach_now": 7054105,
+ "index_now": 2.0448,
+ "reach_now": 7052054,
  "cap_per_campaign": 250,
  "pois": {
   "상급·종합병원": 383,
@@ -39,21 +39,9 @@
   "등산로 입구": 8,
   "하나 시니어 라운지": 1
  },
- "ops_before": 0,
- "template": {
-  "campaign": "[TEST] 하나_라운지_반경1km",
-  "bidding": "TARGET_SPEND",
-  "languages": 0,
-  "ag_criteria": 0,
-  "audiences": [
-   "customers/6512297735/audiences/365878815"
-  ],
-  "ads": 1,
-  "upgraded_targeting": {
-   "upgradedTargeting": false
-  }
- },
- "validate_ops": 5,
- "validate": "OK — 실제 생성 가능",
- "ops_used_today": 0
+ "ops_before": 400,
+ "error": [
+  "Cannot select fields from the following resource: 'CAMPAIGN_BUDGET', since the resource is incompatible with the resource in FROM clause. @ "
+ ],
+ "ops_used_today": 400
 }
