@@ -313,6 +313,7 @@ def main():
                 if ast != st:
                     ctl.append(('adGroups', {'update': {'resourceName': agrn, 'status': st}, 'updateMask': 'status'}))
         base = env('GADS_DAILY_BUDGET_WON').replace(',', '')
+        minb = int(env('GADS_MIN_BUDGET_WON', '10000'))   # 디맨드젠 캠페인 일 예산 최소(1,000원은 거절됨, 10,000원은 통과 확인)
         bud = []
         if base.isdigit() and fleet:
             lo, hi = float(env('GADS_INDEX_MIN', '0.2')), float(env('GADS_INDEX_MAX', '2.0'))
@@ -327,7 +328,7 @@ def main():
                 tday = day * share[k] / ssum
                 log['budget']['by_type'][tname[k]] = int(tday)
                 for cp in cps:
-                    won = max(1000, int(round(tday * w[cp] / ws / 10) * 10))
+                    won = max(minb, int(round(tday * w[cp] / ws / 10) * 10))
                     old = fleet[cp]['amount'] / 1e6
                     if old and abs(won - old) / old <= 0.05: continue
                     bud.append(('campaignBudgets', {'update': {'resourceName': fleet[cp]['budget'], 'amountMicros': str(won * 1_000_000)},
@@ -383,7 +384,7 @@ def main():
             return len(items)
 
         add_radii(plan_add)
-        start_won = max(1000, int(int(base or 10000) / max(1, sum(math.ceil(len(v) / cap) for v in want.values()))))
+        start_won = minb
         for k, n, chunk in need_new:
             o = build_campaign_ops(ads, t, f'{PREFIX} {tname.get(k, k)} #{n}', f'[하나맵|{k}|{n}]', start_won * 1_000_000)
             if ops.left() < len(o) + len(chunk): break
