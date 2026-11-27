@@ -19,7 +19,9 @@
 | `data/osm_pois.json` | OpenStreetMap 거점 수집본 |
 | `feed/fetch_kma.py` | 기상청·에어코리아 수집 (시크릿 `DATA_GO_KR_KEY` 필요) |
 | `feed/osm_pois.py` | OSM 거점 수집 (수동 실행) |
-| `.github/workflows/` | `hana-weather.yml`(매시), `hana-osm.yml`(수동) |
+| `ads/` | Google Ads 정시 자동 반영 스크립트 (설정은 `ads/README.md`) |
+| `data/ads_plan.json`, `data/ads_log.json` | 정시 유형별 가중치 계산 결과 / Google Ads 반영 기록 |
+| `.github/workflows/` | `hana-weather.yml`(매시), `hana-ads.yml`(매시 Google Ads 반영), `hana-osm.yml`(수동) |
 
 ## 설정
 
