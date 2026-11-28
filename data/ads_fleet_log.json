@@ -1,13 +1,10 @@
 {
- "time": "2026-11-28 08:00",
+ "time": "2026-11-28 09:00",
  "mode": "live",
  "serve": false,
- "types_on": [
-  "요양병원",
-  "등산로 입구"
- ],
- "index_now": 1.0813,
- "reach_now": 4697868,
+ "types_on": [],
+ "index_now": 0.8684,
+ "reach_now": 0,
  "cap_per_campaign": 250,
  "pois": {
   "상급·종합병원": 383,
@@ -38,7 +35,7 @@
  },
  "ops_before": 2239,
  "query_errors": {
-  "campaign": "429 {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"quotaError\": \"RESOURCE_EXHAUSTED\"\n            },\n            \"message\": \"Too many requests. Retry in 29525 seconds.\",\n            \"details\": {\n              \"quotaErrorDetails\": {\n                \"rateScope\": \"DEVELOPER\",\n                \"rateName\": \"Number of operations fo"
+  "campaign": "429 {\n  \"error\": {\n    \"code\": 429,\n    \"message\": \"Resource has been exhausted (e.g. check quota).\",\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"details\": [\n      {\n        \"@type\": \"type.googleapis.com/google.ads.googleads.v26.errors.GoogleAdsFailure\",\n        \"errors\": [\n          {\n            \"errorCode\": {\n              \"quotaError\": \"RESOURCE_EXHAUSTED\"\n            },\n            \"message\": \"Too many requests. Retry in 25242 seconds.\",\n            \"details\": {\n              \"quotaErrorDetails\": {\n                \"rateScope\": \"DEVELOPER\",\n                \"rateName\": \"Number of operations fo"
  },
  "ops_used_today": 2239
 }
