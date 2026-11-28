@@ -1,10 +1,13 @@
 {
- "time": "2026-11-28 17:00",
+ "time": "2026-11-28 18:00",
  "mode": "live",
  "serve": false,
- "types_on": [],
- "index_now": 1.3867,
- "reach_now": 0,
+ "types_on": [
+  "요양병원",
+  "등산로 입구"
+ ],
+ "index_now": 1.4245,
+ "reach_now": 4728873,
  "cap_per_campaign": 250,
  "pois": {
   "상급·종합병원": 383,
